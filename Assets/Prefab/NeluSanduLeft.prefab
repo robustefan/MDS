@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114992711054537074}
   m_Layer: 0
   m_Name: NeluSanduLeft
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   a: {fileID: 1625141527744544, guid: 2ecb51aa90286484ab39edecde9f5a2c, type: 2}
+  camera: []
 --- !u!212 &212370475110977444
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -131,7 +132,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: a8a70b55de7e7e845a9de34778302543, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6ccf7e97c4e6e114eaefaf856f6609c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
