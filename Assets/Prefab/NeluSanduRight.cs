@@ -5,11 +5,14 @@ public class NeluSanduRight : MonoBehaviour
 
 	public GameObject a;
 	public GameObject[] camera;
+    private GameObject rope;
 	private Vector3 offset;
-
+    private float RopeDistance = 3.84f;
 	void Awake()
 	{
 		camera = GameObject.FindGameObjectsWithTag ("MainCamera");
+        rope = GameObject.FindGameObjectWithTag("Rope");
+       
 	}
 
 	void Start()
@@ -19,8 +22,11 @@ public class NeluSanduRight : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown ("up"))
-			transform.Translate (0, 0.6f, 0);
+        if (Input.GetKeyDown("up"))
+        {
+            transform.Translate(0, 0.6f, 0);
+            rope = Instantiate(rope, new Vector3(rope.transform.position.x, rope.transform.position.y + RopeDistance, 0), Quaternion.identity);
+        }
 		if (Input.GetKeyDown ("down"))
 			transform.Translate (0, -0.6f, 0);
 		if (Input.GetKeyDown ("right"))
