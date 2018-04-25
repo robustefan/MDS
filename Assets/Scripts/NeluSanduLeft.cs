@@ -1,28 +1,28 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NeluSanduLeft : MonoBehaviour
 {
 
 	public GameObject a;
-	public GameObject[] camera;
+	public GameObject camera;
 	private Vector3 offset;
+	private float index = 0.025f;
 
 	void Awake()
 	{
-		camera = GameObject.FindGameObjectsWithTag ("MainCamera");
+		camera = GameObject.FindGameObjectWithTag ("MainCamera");
 	}
 
 	void Start()
 	{
-		offset = camera [0].transform.position - transform.position;
+		offset = camera.transform.position - transform.position;
 	}
 		
 	void Update()
 	{
 		if (Input.GetKeyDown ("up"))
 			transform.Translate (0, 0.6f, 0);
-		if (Input.GetKeyDown ("down"))
-			transform.Translate (0, -0.6f, 0);
 		if (Input.GetKeyDown ("left"))
 		{
 			Destroy (gameObject);
@@ -32,7 +32,13 @@ public class NeluSanduLeft : MonoBehaviour
 
 	void LateUpdate()
 	{
-		camera[0].transform.position = transform.position + offset;
+		camera.transform.position = transform.position + offset;
+		transform.Translate (0, index, 0);
 	}
 		
+	void OnCollisionEnter2D( Collision2D col )
+	{
+		Debug.Log ("Game over");
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1) ;
+	}
 }
