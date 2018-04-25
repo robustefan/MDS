@@ -4,14 +4,20 @@ public class NeluSanduRight : MonoBehaviour
 {
 
 	public GameObject a;
-	public GameObject[] camera;
-    private GameObject rope;
+    //public GameObject[] camera;
+    public new GameObject[] camera;
+   // private GameObject rope;
+    private GameObject BigRope;
 	private Vector3 offset;
     private float RopeDistance = 3.84f;
+    public float BigRopeDistance = 17.7f;
+    public int BigRopeCounter = 0;
+    public int RopeInstatiate = 30;
 	void Awake()
 	{
 		camera = GameObject.FindGameObjectsWithTag ("MainCamera");
-        rope = GameObject.FindGameObjectWithTag("Rope");
+        //rope = GameObject.FindGameObjectWithTag("Rope");
+        BigRope = GameObject.FindGameObjectWithTag("BigRope");
        
 	}
 
@@ -25,10 +31,19 @@ public class NeluSanduRight : MonoBehaviour
         if (Input.GetKeyDown("up"))
         {
             transform.Translate(0, 0.6f, 0);
-            rope = Instantiate(rope, new Vector3(rope.transform.position.x, rope.transform.position.y + RopeDistance, 0), Quaternion.identity);
+            ++BigRopeCounter;
+            if(BigRopeCounter%30 == 0)
+            BigRope = Instantiate(BigRope, new Vector3(BigRope.transform.position.x, BigRope.transform.position.y + BigRopeDistance, 0), Quaternion.identity);
         }
-		if (Input.GetKeyDown ("down"))
-			transform.Translate (0, -0.6f, 0);
+        if (Input.GetKeyDown("down"))
+        {
+            transform.Translate(0, -0.6f, 0);
+            --BigRopeCounter;
+            if(BigRopeCounter%30 == 0)
+                BigRope = Instantiate(BigRope, new Vector3(BigRope.transform.position.x, BigRope.transform.position.y + BigRopeDistance, 0), Quaternion.identity);
+
+
+        }
 		if (Input.GetKeyDown ("right"))
 		{
 			Destroy (gameObject);

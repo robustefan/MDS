@@ -4,17 +4,30 @@ public class NeluSanduLeft : MonoBehaviour
 {
 
 	public GameObject a;
-	public GameObject[] camera;
-	private Vector3 offset;
+    private new GameObject[] camera;
+    private Vector3 offset;
 
-	void Awake()
+    public GameObject[] Camera
+    {
+        get
+        {
+            return camera;
+        }
+
+        set
+        {
+            camera = value;
+        }
+    }
+
+    void Awake()
 	{
-		camera = GameObject.FindGameObjectsWithTag ("MainCamera");
+		Camera = GameObject.FindGameObjectsWithTag ("MainCamera");
 	}
 
 	void Start()
 	{
-		offset = camera [0].transform.position - transform.position;
+		offset = Camera [0].transform.position - transform.position;
 	}
 		
 	void Update()
@@ -32,7 +45,7 @@ public class NeluSanduLeft : MonoBehaviour
 
 	void LateUpdate()
 	{
-		camera[0].transform.position = transform.position + offset;
+		Camera[0].transform.position = transform.position + offset;
 	}
 		
 }
