@@ -76,8 +76,8 @@ public class BackgroundGenerator : MonoBehaviour {
     {
         if (camera.transform.position.y > BackgroundCollider)
         // un fel de "collider logic"
-        // Cand ajunge la sfarsitul Backgroundului se spawneaza un background si franghie mai sus , si se sterg de mai jos
-        // as putea sa pun un collider la propriu la background dar nu sunt sigur inca  cum functioneaza
+        // Cand se ajunge la sfarsitul Backgroundului , se spawneaza un background si franghie mai sus , si se sterg de mai jos
+        // as putea sa pun un collider la propriu la background , dar nu sunt sigur inca  cum functioneaza
         {
             BackgroundCollider += BackgroundHeight;
             ++ColliderCounter;
