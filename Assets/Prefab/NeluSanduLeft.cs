@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 
 public class NeluSanduLeft : MonoBehaviour
 {
@@ -36,3 +36,4 @@ public class NeluSanduLeft : MonoBehaviour
 	}
 		
 }
+*/
