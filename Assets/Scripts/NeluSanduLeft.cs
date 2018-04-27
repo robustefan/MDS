@@ -4,10 +4,10 @@ using UnityEngine.SceneManagement;
 public class NeluSanduLeft : MonoBehaviour
 {
 
-	public GameObject a;
-	public GameObject camera;
-	private Vector3 offset;
-	private float index = 0.025f;
+    public GameObject a;
+    public GameObject camera;
+    private Vector3 offset;
+    private float index = 0.025f;
 
 	void Awake()
 	{
