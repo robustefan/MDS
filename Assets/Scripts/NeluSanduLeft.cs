@@ -7,7 +7,7 @@ public class NeluSanduLeft : MonoBehaviour
     public GameObject a;
     public GameObject camera;
     private Vector3 offset;
-    private float index = 0.025f;
+	public static float index = 0.025f;
 
 	void Awake()
 	{
@@ -32,8 +32,13 @@ public class NeluSanduLeft : MonoBehaviour
 
 	void LateUpdate()
 	{
-		camera.transform.position = transform.position + offset;
-		transform.Translate (0, index, 0);
+		if(PauseCanvas.GameIsPaused == false )
+		{
+			camera.transform.position = transform.position + offset;
+
+			transform.Translate(0, index, 0);
+		}
+
 	}
 		
 	void OnCollisionEnter2D( Collision2D col )

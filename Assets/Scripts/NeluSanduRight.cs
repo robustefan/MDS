@@ -8,7 +8,7 @@ public class NeluSanduRight : MonoBehaviour
 	public GameObject camera;
 	private Vector3 offset;
 //	private GameObject[] ropeVector;
-	private float index = 0.025f;
+	public static float index = 0.025f;
 	void Awake()
 	{
 		camera = GameObject.FindGameObjectWithTag ("MainCamera");

@@ -52,15 +52,15 @@ public class LevelGenerator : MonoBehaviour
             spawnPosition.y += Random.Range(minY, maxY);
             int id = Random.Range(0, 9) / 5;
 
-            if (consecutive1 % 4 == 0)
+            if (consecutive1 % 3 == 0)
             {
                 consecutive1 = 1;
-                id = 0;
+                id = 1;
             }
             if (consecutive2 % 3 == 0)
             {
                 consecutive2 = 1;
-                id = 1;
+                id = 0;
             }
             AddObstacle(id);
         }
@@ -81,7 +81,6 @@ public class LevelGenerator : MonoBehaviour
     void Start()
     {
         Obstacles = new Queue<GameObject>();
-        Vector3 spawnPosition = new Vector3();
         spawnPosition.y = 5f;
 
         AddPileOfObstacles(numberOfObstacles / 2);
@@ -96,6 +95,8 @@ public class LevelGenerator : MonoBehaviour
             lastObstacleY = spawnPosition.y;
             AddPileOfObstacles(numberOfObstacles / 2);
             RemovePileOfObstacles(numberOfObstacles / 2);
+			NeluSanduLeft.index += 0.01f;
+			NeluSanduRight.index += 0.01f;
         }
     }
 
