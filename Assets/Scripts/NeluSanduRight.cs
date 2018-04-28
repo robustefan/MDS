@@ -36,16 +36,20 @@ public class NeluSanduRight : MonoBehaviour
 
 	void LateUpdate()
 	{
-		camera.transform.position = transform.position + offset;
+        if(PauseCanvas.GameIsPaused == false )
+        {
+            camera.transform.position = transform.position + offset;
 
-		transform.Translate (0, index, 0);
+            transform.Translate(0, index, 0);
+        }
+	
 
 	}
 
 	void OnCollisionEnter2D( Collision2D col )
 	{
 		Debug.Log ("Game over");
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
+        SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
 	}
 
 }
