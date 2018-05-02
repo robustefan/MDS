@@ -5,10 +5,10 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
 
-    public int numberOfObstacles = 20;
+    public int numberOfObstacles = 10;
     public float levelWidth = 3f;
-    private float minY = 6f;
-    private float maxY = 7f;
+    private float minY = 7f;
+    private float maxY = 8f;
 
     public GameObject camera;
     public GameObject[] obstacle;
@@ -17,11 +17,20 @@ public class LevelGenerator : MonoBehaviour
     private int consecutive1, consecutive2;
     private GameObject temp;
     private float lastObstacleY;
+	private int adauga_minereu;
+	private int ok = 0;
+	public ScoreCalculation scoreBoard;
+
+	LevelGenerator()
+	{
+		scoreBoard = new ScoreCalculation ();
+	}
 
     private void Awake()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
         obstacle = GameObject.FindGameObjectsWithTag("Obstacle");
+
     }
 
     void AddObstacle(int id)
@@ -63,6 +72,18 @@ public class LevelGenerator : MonoBehaviour
                 id = 0;
             }
             AddObstacle(id);
+
+
+			if (adauga_minereu == i) 
+			{
+				Vector3 pos = new Vector3 ();
+				pos.x = obstacle [2].transform.position.x;
+		
+				pos.y = spawnPosition.y - Random.Range (3,4);
+				Obstacles.Enqueue (Instantiate (obstacle [2], pos, Quaternion.identity));
+				adauga_minereu = -1;
+				Debug.Log ("Am adaugat minereu" + pos.x+ " " + pos.y);
+			}
         }
         lastObstacleY = spawnPosition.y;
     }
@@ -82,22 +103,50 @@ public class LevelGenerator : MonoBehaviour
     {
         Obstacles = new Queue<GameObject>();
         spawnPosition.y = 5f;
+		adauga_minereu = -1;
 
-        AddPileOfObstacles(numberOfObstacles / 2);
-        lastObstacleY = spawnPosition.y;
-        AddPileOfObstacles(numberOfObstacles / 2);
+        AddPileOfObstacles(numberOfObstacles);
+
     }
+
+	IEnumerator Wait()
+	{
+		yield return new WaitForSeconds (4);
+		RemovePileOfObstacles(numberOfObstacles + ok);
+	}	
 
     private void Update()
     {
         if(camera.transform.position.y > lastObstacleY)
         {
             lastObstacleY = spawnPosition.y;
-            AddPileOfObstacles(numberOfObstacles / 2);
-            RemovePileOfObstacles(numberOfObstacles / 2);
+			adauga_minereu = Random.Range (0, 9);
+			AddPileOfObstacles(numberOfObstacles);
+			StartCoroutine (Wait ());
 			NeluSanduLeft.index += 0.01f;
 			NeluSanduRight.index += 0.01f;
+			ok = 1;
         }
+
+		if (NeluSanduLeft.este_distrus == true) 
+		{
+			StartCoroutine (Destroy_Ore (NeluSanduLeft.coliziune_minereu));
+			NeluSanduLeft.este_distrus = false;
+			scoreBoard.CalcScore ();
+		}
+		if (NeluSanduRight.este_distrus == true) 
+		{
+			StartCoroutine (Destroy_Ore (NeluSanduRight.coliziune_minereu));
+			NeluSanduRight.este_distrus = false;
+			scoreBoard.CalcScore ();
+		}
     }
+
+	IEnumerator Destroy_Ore(Collision2D col)
+	{
+		yield return new WaitForSeconds (4);
+		Debug.Log ("L-am refacut");
+		col.gameObject.transform.localScale = new Vector3 (0.5f, 0.5f, 1);
+	}
 
 }

@@ -6,7 +6,7 @@ public class ScoreCalculation : MonoBehaviour {
     public Text score;
     public Text highscore;
     public GameObject player;
-    int number = 0;
+	public static int number = 0;
     
 
     private void Start()
@@ -26,6 +26,7 @@ public class ScoreCalculation : MonoBehaviour {
             CalcScore();
         }
     }
+
     public void CalcScore()
     {
         number++;
