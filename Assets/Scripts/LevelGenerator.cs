@@ -21,10 +21,11 @@ public class LevelGenerator : MonoBehaviour
 	private int ok = 0;
 	public ScoreCalculation scoreBoard;
 
-	LevelGenerator()
+	/* LevelGenerator()
 	{
 		scoreBoard = new ScoreCalculation ();
 	}
+    */
 
     private void Awake()
     {

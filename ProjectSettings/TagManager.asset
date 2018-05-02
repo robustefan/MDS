@@ -8,6 +8,7 @@ TagManager:
   - BigRope
   - Obstacle
   - Background
+  - lava
   layers:
   - Default
   - TransparentFX
