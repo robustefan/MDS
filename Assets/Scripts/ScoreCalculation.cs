@@ -5,27 +5,20 @@ public class ScoreCalculation : MonoBehaviour {
 
     public Text score;
     public Text highscore;
-    public GameObject player;
-	public static int number = 0;
-    
+	public static int number;
+
 
     private void Start()
     {
-        
-
         highscore.text = PlayerPrefs.GetInt("Highscore", 0).ToString();
         score.text = "0";
+		number = 0;
      
     }
-
-    private void Update()
-    {
-        bool tasta = Input.GetKeyDown(KeyCode.UpArrow);
-        if (tasta)
-        {
-            CalcScore();
-        }
-    }
+	public int get_number(){
+		return number;
+	}
+				
 
     public void CalcScore()
     {

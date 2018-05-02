@@ -19,19 +19,14 @@ public class LevelGenerator : MonoBehaviour
     private float lastObstacleY;
 	private int adauga_minereu;
 	private int ok = 0;
-	public ScoreCalculation scoreBoard;
-
-	/* LevelGenerator()
-	{
-		scoreBoard = new ScoreCalculation ();
-	}
-    */
+	private ScoreCalculation scoreBoard;
+   
 
     private void Awake()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
         obstacle = GameObject.FindGameObjectsWithTag("Obstacle");
-
+		scoreBoard = FindObjectOfType<ScoreCalculation> ();
     }
 
     void AddObstacle(int id)
@@ -118,6 +113,12 @@ public class LevelGenerator : MonoBehaviour
 
     private void Update()
     {
+
+		if (NeluSanduLeft.index == 0)
+			NeluSanduLeft.index = NeluSanduLeft.old_index;
+		if (NeluSanduRight.index == 0)
+			NeluSanduRight.index = NeluSanduRight.old_index;
+		
         if(camera.transform.position.y > lastObstacleY)
         {
             lastObstacleY = spawnPosition.y;
@@ -126,6 +127,12 @@ public class LevelGenerator : MonoBehaviour
 			StartCoroutine (Wait ());
 			NeluSanduLeft.index += 0.01f;
 			NeluSanduRight.index += 0.01f;
+			if( NeluSanduLeft.index != 0.01f )
+				NeluSanduLeft.old_index = NeluSanduLeft.index;
+			if( NeluSanduRight.index != 0.01f)
+				NeluSanduRight.old_index = NeluSanduRight.index;
+			NeluSanduLeft.lava_index += 0.01f;
+			NeluSanduRight.lava_index += 0.01f;
 			ok = 1;
         }
 

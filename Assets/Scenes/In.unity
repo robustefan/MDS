@@ -194,15 +194,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4451287152106756, guid: 2dac824bc26363e43bd23f2b22792842, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4451287152106756, guid: 2dac824bc26363e43bd23f2b22792842, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4451287152106756, guid: 2dac824bc26363e43bd23f2b22792842, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4451287152106756, guid: 2dac824bc26363e43bd23f2b22792842, type: 2}
       propertyPath: m_LocalRotation.w
@@ -210,7 +210,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4451287152106756, guid: 2dac824bc26363e43bd23f2b22792842, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114178178459514516, guid: 2dac824bc26363e43bd23f2b22792842,
         type: 2}
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65d00590da91604999bcdf6df0bb160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: []
+  player: {fileID: 0}
 --- !u!1 &904797403
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +805,12 @@ Prefab:
       propertyPath: obstacle.Array.data[2]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 114975666726706686, guid: 5cebe509b169b9247b453cb2904d5160,
+        type: 2}
+      propertyPath: scoreBoard
+      value: 
+      objectReference: {fileID: 114984526137654978, guid: 932fe245f87531a4a94e6e6ddecb271e,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5cebe509b169b9247b453cb2904d5160, type: 2}
   m_IsPrefabParent: 0
@@ -818,9 +824,10 @@ GameObject:
   - component: {fileID: 1115441944}
   - component: {fileID: 1115441943}
   - component: {fileID: 1115441942}
+  - component: {fileID: 1115441945}
   m_Layer: 0
   m_Name: Lava
-  m_TagString: Untagged
+  m_TagString: Lava
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -893,12 +900,29 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1115441941}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -14.04, z: 10}
+  m_LocalPosition: {x: -0.01, y: -16, z: 10}
   m_LocalScale: {x: 2.8911881, y: 2.2375617, z: 1}
   m_Children: []
   m_Father: {fileID: 890067260}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!68 &1115441945
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1115441941}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -2.2019465, y: 3.7474048}
+  - {x: 2.2313282, y: 3.747405}
 --- !u!1 &1233265697 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1880035993532878, guid: edb9b9e2fafd06a4dbcc65fef55fb5ba,
@@ -1112,7 +1136,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4598844116655370, guid: edb9b9e2fafd06a4dbcc65fef55fb5ba, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: edb9b9e2fafd06a4dbcc65fef55fb5ba, type: 2}

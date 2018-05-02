@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
-	public GameObject[] player;
+	public GameObject player;
 	private Vector3 offset;
 
 	void Awake()
 	{
-		player = GameObject.FindGameObjectsWithTag("Player");
+		player = GameObject.FindGameObjectWithTag("Player");
 	}
 
 	void Start()
 	{
-		offset = transform.position - player[0].transform.position;
+		offset = transform.position - player.transform.position;
 	}
 	
 	void lateUpdate () 
 	{
-		if(player[0])
-			transform.position = player[0].transform.position + offset;
+		if(player)
+			transform.position = player.transform.position + offset;
 		
-		player = GameObject.FindGameObjectsWithTag("Player");
+		player = GameObject.FindGameObjectWithTag("Player");
 
 	}
 }
