@@ -10,12 +10,12 @@ public class NeluSanduRight : MonoBehaviour
 	public Animator anim;
 	private GameObject lava;
 	private Vector3 offset;
-	private int hp;
+	public static int hp = 3;
 	private int default_hp;
 	public float dif;
-//	private GameObject[] ropeVector;
-	public static float index;
-	public static float lava_index;
+	//	private GameObject[] ropeVector;
+	public static float index = 0.025f;
+	public static float lava_index = 0.01f;
 	public static Collision2D coliziune_minereu;
 	public static bool este_distrus = false;
 	public static float old_index;
@@ -25,14 +25,11 @@ public class NeluSanduRight : MonoBehaviour
 	{
 		camera = GameObject.FindGameObjectWithTag ("MainCamera");
 		///ropeVector = GameObject.FindGameObjectsWithTag ("Rope");
-       
+
 	}
 
 	void Start()
 	{
-		index = 0.025f;
-		lava_index = 0.01f;
-		hp = 3;
 		offset = camera.transform.position - transform.position;
 		anim = GetComponent<Animator> ();
 		old_index = index;
@@ -65,21 +62,21 @@ public class NeluSanduRight : MonoBehaviour
 
 	void LateUpdate()
 	{
-        if(PauseCanvas.GameIsPaused == false )
-        {
-            camera.transform.position = transform.position + offset;
+		if(PauseCanvas.GameIsPaused == false )
+		{
+			camera.transform.position = transform.position + offset;
 
-            transform.Translate(0, index, 0);
-        }
+			transform.Translate(0, index, 0);
+		}
 
 		index = old_index;
 		if( PauseCanvas.GameIsPaused == false )
 			lava.transform.Translate (0, lava_index, 0);
 
 		if (ScoreCalculation.number % 5 == 0)
-			if( default_hp != 0 )
-				default_hp--;
-	
+		if( default_hp != 0 )
+			default_hp--;
+
 
 	}
 
@@ -88,6 +85,13 @@ public class NeluSanduRight : MonoBehaviour
 		if (col.gameObject.name.StartsWith("C") == false ) 
 		{	
 			Debug.Log ("Game over");
+			index = 0.025f;
+			lava_index = 0.01f;
+			hp = 3;
+			NeluSanduLeft.index = index;
+			NeluSanduLeft.lava_index = lava_index;
+			NeluSanduLeft.hp = hp;
+			old_index = index;
 			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
 		}
 		else
@@ -106,16 +110,16 @@ public class NeluSanduRight : MonoBehaviour
 					}
 				}
 			}
-				
+
 	}
 
 	IEnumerator Wait()
 	{
-		
+
 		yield return new WaitForSeconds (0.3f);
 		index = old_index;
 
 	}	
-		
+
 
 }
