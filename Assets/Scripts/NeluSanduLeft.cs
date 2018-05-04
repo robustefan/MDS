@@ -5,16 +5,16 @@ using System.Collections;
 public class NeluSanduLeft : MonoBehaviour
 {
 
-    public GameObject a;
-    public GameObject camera;
-    private Vector3 offset;
+	public GameObject a;
+	public GameObject camera;
+	private Vector3 offset;
 	public Animator anim;
 	private GameObject lava;
 	public float dif;
-	public static float index;
+	public static float index = 0.025f;
 	public static float old_index;
-	public static float lava_index;
-	private int hp;
+	public static float lava_index = 0.01f;
+	public static int hp = 3;
 	private int default_hp;
 	public static Collision2D coliziune_minereu;
 	public static bool este_distrus = false;
@@ -27,9 +27,6 @@ public class NeluSanduLeft : MonoBehaviour
 
 	void Start()
 	{
-		index = 0.025f;
-		lava_index = 0.01f;
-		hp = 3;
 		offset = camera.transform.position - transform.position;
 		anim = GetComponent<Animator> ();
 		old_index = index;
@@ -37,7 +34,7 @@ public class NeluSanduLeft : MonoBehaviour
 		dif = transform.position.y - lava.transform.position.y ;
 		default_hp = 3;
 	}
-		
+
 	void Update()
 	{
 		if (Input.GetKeyDown ("up")) 
@@ -45,7 +42,7 @@ public class NeluSanduLeft : MonoBehaviour
 			transform.Translate (0, 0.6f, 0);
 			if (camera.transform.position.y - lava.transform.position.y < 16.5f )
 				lava.transform.Translate (0, -20 * lava_index, 0);
-		
+
 		}
 
 		if (Input.GetKeyDown ("left"))
@@ -73,17 +70,24 @@ public class NeluSanduLeft : MonoBehaviour
 		if( PauseCanvas.GameIsPaused == false )
 			lava.transform.Translate (0, lava_index, 0);
 
-		if (ScoreCalculation.number % 5 == 0)
+		if (ScoreCalculation.number % 5 == 0)		// la fiecare 5 puncte, arma noastra are nevoie de 1 lovitura mai putin pentru a sparge minereul	
 		if( default_hp != 0 )
 			default_hp--;
 
 	}
-		
+
 	void OnCollisionStay2D( Collision2D col )
 	{
 		if (col.gameObject.name.StartsWith("C") == false ) 
 		{	
 			Debug.Log ("Game over");
+			index = 0.025f;
+			lava_index = 0.01f;
+			hp = 3;
+			NeluSanduRight.index = index;
+			NeluSanduRight.lava_index = lava_index;
+			NeluSanduRight.hp = hp;
+			old_index = index;
 			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
 		}
 		else
@@ -103,7 +107,7 @@ public class NeluSanduLeft : MonoBehaviour
 	IEnumerator Wait()
 	{
 		yield return new WaitForSeconds (0.3f);
-			index = old_index;
+		index = old_index;
 	}
-		
+
 }
