@@ -6,8 +6,8 @@ public class LevelGenerator : MonoBehaviour
 {
 
 	public int numberOfObstacles = 10;
-	private float minY = 7f;
-	private float maxY = 8f;
+	private float minY = 8.5f;
+	private float maxY = 9.5f;
 	private GameObject camera;
 	private GameObject[] obstacle;
 	private GameObject[] ore;
@@ -75,10 +75,9 @@ public class LevelGenerator : MonoBehaviour
 				Vector3 pos = new Vector3 ();
 				pos.x = ore[0].transform.position.x;
 
-				pos.y = spawnPosition.y - Random.Range (3,4);
+				pos.y = spawnPosition.y - Random.Range (4,5);
 				Obstacles.Enqueue (Instantiate (ore[0], pos, Quaternion.identity));
 				adauga_minereu = -1;
-				Debug.Log ("Am adaugat minereu" + pos.x+ " " + pos.y);
 			}
 		}
 		lastObstacleY = spawnPosition.y;
@@ -107,19 +106,14 @@ public class LevelGenerator : MonoBehaviour
 
 	IEnumerator Wait()
 	{
-		yield return new WaitForSeconds (4);
+		yield return new WaitForSeconds (20);
 		RemovePileOfObstacles(numberOfObstacles + ok);
 	}	
 
 	private void Update()
 	{
 
-		if (NeluSanduLeft.index == 0)
-			NeluSanduLeft.index = NeluSanduLeft.old_index;
-		if (NeluSanduRight.index == 0)
-			NeluSanduRight.index = NeluSanduRight.old_index;
-
-		if(camera.transform.position.y > lastObstacleY)
+		if(camera.transform.position.y > lastObstacleY - 5f)
 		{
 			lastObstacleY = spawnPosition.y;
 			adauga_minereu = Random.Range (0, 9);
@@ -134,7 +128,6 @@ public class LevelGenerator : MonoBehaviour
 				NeluSanduRight.old_index = NeluSanduRight.index;
 			NeluSanduLeft.lava_index += 0.01f;
 			NeluSanduRight.lava_index += 0.01f;
-			Debug.Log (NeluSanduLeft.index);
 			ok = 1;
 		}
 
@@ -143,19 +136,30 @@ public class LevelGenerator : MonoBehaviour
 			StartCoroutine (Destroy_Ore (NeluSanduLeft.coliziune_minereu));
 			NeluSanduLeft.este_distrus = false;
 			scoreBoard.CalcScore ();
+			if ((ScoreCalculation.number + 1) % 6 == 0) {
+				if (NeluSanduLeft.default_hp != 0)
+					NeluSanduLeft.default_hp--;
+				if (NeluSanduRight.default_hp != 0)
+					NeluSanduRight.default_hp--;
+			}
 		}
 		if (NeluSanduRight.este_distrus == true) 
 		{
 			StartCoroutine (Destroy_Ore (NeluSanduRight.coliziune_minereu));
 			NeluSanduRight.este_distrus = false;
 			scoreBoard.CalcScore ();
+			if ((ScoreCalculation.number + 1) % 6 == 0) {
+				if (NeluSanduLeft.default_hp != 0)
+					NeluSanduLeft.default_hp--;
+				if (NeluSanduRight.default_hp != 0)
+					NeluSanduRight.default_hp--;
+			}
 		}
 	}
 
 	IEnumerator Destroy_Ore(Collision2D col)
 	{
 		yield return new WaitForSeconds (4);
-		Debug.Log ("L-am refacut");
 		col.gameObject.transform.localScale = new Vector3 (0.5f, 0.5f, 1);
 	}
 

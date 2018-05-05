@@ -11,15 +11,14 @@ public class NeluSanduRight : MonoBehaviour
 	private GameObject lava;
 	private Vector3 offset;
 	public static int hp = 3;
-	private int default_hp;
+	public static int default_hp = 3;
 	public float dif;
 	//	private GameObject[] ropeVector;
 	public static float index = 0.025f;
 	public static float lava_index = 0.01f;
 	public static Collision2D coliziune_minereu;
 	public static bool este_distrus = false;
-	public static float old_index;
-	private float last_pressed;
+	public static float old_index = 0.025f;
 
 	void Awake()
 	{
@@ -35,7 +34,6 @@ public class NeluSanduRight : MonoBehaviour
 		old_index = index;
 		lava = GameObject.FindGameObjectWithTag ("Lava");
 		dif = transform.position.y - lava.transform.position.y ;
-		default_hp = 3;
 	}
 
 	void Update()
@@ -69,14 +67,8 @@ public class NeluSanduRight : MonoBehaviour
 			transform.Translate(0, index, 0);
 		}
 
-		index = old_index;
 		if( PauseCanvas.GameIsPaused == false )
 			lava.transform.Translate (0, lava_index, 0);
-
-		if (ScoreCalculation.number % 5 == 0)
-		if( default_hp != 0 )
-			default_hp--;
-
 
 	}
 
@@ -97,18 +89,15 @@ public class NeluSanduRight : MonoBehaviour
 		else
 			if( Input.GetKeyDown("space"))
 			{
-				if (last_pressed != Time.time) 
-				{
-					last_pressed = Time.time;
 
-					hp--;
-					if (hp == 0) {
-						col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
-						hp = default_hp;
-						este_distrus = true;
-						coliziune_minereu = col;
-					}
+				hp--;
+				if (hp == 0) {
+					col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
+					hp = default_hp;
+					este_distrus = true;
+					coliziune_minereu = col;
 				}
+
 			}
 
 	}

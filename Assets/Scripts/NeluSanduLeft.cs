@@ -12,10 +12,10 @@ public class NeluSanduLeft : MonoBehaviour
 	private GameObject lava;
 	public float dif;
 	public static float index = 0.025f;
-	public static float old_index;
+	public static float old_index = 0.025f;
 	public static float lava_index = 0.01f;
 	public static int hp = 3;
-	private int default_hp;
+	public static int default_hp = 3;
 	public static Collision2D coliziune_minereu;
 	public static bool este_distrus = false;
 
@@ -29,10 +29,8 @@ public class NeluSanduLeft : MonoBehaviour
 	{
 		offset = camera.transform.position - transform.position;
 		anim = GetComponent<Animator> ();
-		old_index = index;
 		lava = GameObject.FindGameObjectWithTag ("Lava");
 		dif = transform.position.y - lava.transform.position.y ;
-		default_hp = 3;
 	}
 
 	void Update()
@@ -66,13 +64,9 @@ public class NeluSanduLeft : MonoBehaviour
 
 			transform.Translate(0, index, 0);
 		}
-		index = old_index;
 		if( PauseCanvas.GameIsPaused == false )
 			lava.transform.Translate (0, lava_index, 0);
 
-		if (ScoreCalculation.number % 5 == 0)		// la fiecare 5 puncte, arma noastra are nevoie de 1 lovitura mai putin pentru a sparge minereul	
-		if( default_hp != 0 )
-			default_hp--;
 
 	}
 
