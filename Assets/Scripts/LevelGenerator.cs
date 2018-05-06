@@ -7,10 +7,13 @@ public class LevelGenerator : MonoBehaviour
 
 	public int numberOfObstacles = 10;
 	private float minY = 8.5f;
-	private float maxY = 9.5f;
+	private float maxY = 11f;
 	private GameObject camera;
+	private GameObject player;
 	private GameObject[] obstacle;
 	private GameObject[] ore;
+	private GameObject[] boosterStar;
+	private GameObject[] boosterPotion;
 	private Queue<GameObject> Obstacles;
 	private Vector3 spawnPosition;
 	private int consecutive1, consecutive2;
@@ -19,6 +22,8 @@ public class LevelGenerator : MonoBehaviour
 	private int adauga_minereu;
 	private int ok = 0;
 	private ScoreCalculation scoreBoard;
+	private BoxCollider2D boxCol;
+	public static bool upgrade_weap = false;
 
 
 	private void Awake()
@@ -26,6 +31,8 @@ public class LevelGenerator : MonoBehaviour
 		camera = GameObject.FindGameObjectWithTag("MainCamera");
 		obstacle = GameObject.FindGameObjectsWithTag("Obstacle");
 		ore = GameObject.FindGameObjectsWithTag ("Ore");
+		boosterStar = GameObject.FindGameObjectsWithTag ("BoosterStar");
+		boosterPotion = GameObject.FindGameObjectsWithTag ("BoosterPotion");
 		scoreBoard = FindObjectOfType<ScoreCalculation> ();
 	}
 
@@ -52,6 +59,31 @@ public class LevelGenerator : MonoBehaviour
 		consecutive1 = 1;
 		consecutive2 = 1;
 
+		int adauga_potiune = Random.Range (1, 10);
+		int adauga_stea = Random.Range (1, 10);
+		int alegere = Random.Range (1, 3);
+
+		if( alegere == 1)
+			if (adauga_potiune % 3 == 0) 
+			{
+				Vector3 pos = new Vector3 ();
+				int r = Random.Range (0, 2);
+				pos.x = boosterPotion [r].transform.position.x;
+				pos.y = spawnPosition.y - Random.Range (4, 6);
+				Obstacles.Enqueue (Instantiate (boosterPotion [r], pos, Quaternion.identity));
+				ok++;
+			}
+		else
+			if  (adauga_stea % 3 == 0) 
+			{
+				Vector3 pos = new Vector3 ();
+				int r = Random.Range (0, 2);
+				pos.x = boosterStar [r].transform.position.x;
+				pos.y = spawnPosition.y - Random.Range (4, 6);
+				Obstacles.Enqueue (Instantiate (boosterStar [r], pos, Quaternion.identity));
+				ok++;
+			}
+
 		for (int i = 0; i < Counter; i++)
 		{
 			spawnPosition.y += Random.Range(minY, maxY);
@@ -75,12 +107,29 @@ public class LevelGenerator : MonoBehaviour
 				Vector3 pos = new Vector3 ();
 				pos.x = ore[0].transform.position.x;
 
-				pos.y = spawnPosition.y - Random.Range (4,5);
-				Obstacles.Enqueue (Instantiate (ore[0], pos, Quaternion.identity));
+				pos.y = spawnPosition.y - Random.Range (2,4);
+				int index_minereu = Random.Range (0, 7);
+				Obstacles.Enqueue (Instantiate (ore[index_minereu], pos, Quaternion.identity));
 				adauga_minereu = -1;
+				ok++;
 			}
 		}
 		lastObstacleY = spawnPosition.y;
+			
+		if ((ScoreCalculation.number + 1) % 6 == 0 && upgrade_weap == false) 			// upgrade-ul armei la multiplii de 5
+		{				
+			if (NeluSanduLeft.default_hp != 0) 
+			{
+				upgrade_weap = true;
+				NeluSanduLeft.default_hp--;
+			}
+			if (NeluSanduRight.default_hp != 0) 
+			{
+				NeluSanduRight.default_hp--;
+				upgrade_weap = true;
+			}
+		}
+			
 	}
 
 	void RemoveObstacle()
@@ -98,8 +147,6 @@ public class LevelGenerator : MonoBehaviour
 	{
 		Obstacles = new Queue<GameObject>();
 		spawnPosition.y = 5f;
-		adauga_minereu = -1;
-
 		AddPileOfObstacles(numberOfObstacles);
 
 	}
@@ -108,27 +155,27 @@ public class LevelGenerator : MonoBehaviour
 	{
 		yield return new WaitForSeconds (20);
 		RemovePileOfObstacles(numberOfObstacles + ok);
+		ok = 0;
 	}	
 
 	private void Update()
 	{
 
-		if(camera.transform.position.y > lastObstacleY - 5f)
+		if(camera.transform.position.y > lastObstacleY - 10f)
 		{
 			lastObstacleY = spawnPosition.y;
-			adauga_minereu = Random.Range (0, 9);
+			adauga_minereu = Random.Range (0, numberOfObstacles );
 			AddPileOfObstacles(numberOfObstacles);
 			StartCoroutine (Wait ());
 
-			NeluSanduLeft.index += 0.01f;
-			NeluSanduRight.index += 0.01f;
-			if( NeluSanduLeft.index != 0.01f )
+			NeluSanduLeft.index += 0.001f;
+			NeluSanduRight.index += 0.001f;
+			if( NeluSanduLeft.index != 0.001f )
 				NeluSanduLeft.old_index = NeluSanduLeft.index;
-			if( NeluSanduRight.index != 0.01f)
+			if( NeluSanduRight.index != 0.001f)
 				NeluSanduRight.old_index = NeluSanduRight.index;
-			NeluSanduLeft.lava_index += 0.01f;
-			NeluSanduRight.lava_index += 0.01f;
-			ok = 1;
+			NeluSanduLeft.lava_index += 0.001f;
+			NeluSanduRight.lava_index += 0.001f;
 		}
 
 		if (NeluSanduLeft.este_distrus == true) 
@@ -136,31 +183,66 @@ public class LevelGenerator : MonoBehaviour
 			StartCoroutine (Destroy_Ore (NeluSanduLeft.coliziune_minereu));
 			NeluSanduLeft.este_distrus = false;
 			scoreBoard.CalcScore ();
-			if ((ScoreCalculation.number + 1) % 6 == 0) {
-				if (NeluSanduLeft.default_hp != 0)
-					NeluSanduLeft.default_hp--;
-				if (NeluSanduRight.default_hp != 0)
-					NeluSanduRight.default_hp--;
-			}
 		}
 		if (NeluSanduRight.este_distrus == true) 
 		{
 			StartCoroutine (Destroy_Ore (NeluSanduRight.coliziune_minereu));
 			NeluSanduRight.este_distrus = false;
 			scoreBoard.CalcScore ();
-			if ((ScoreCalculation.number + 1) % 6 == 0) {
-				if (NeluSanduLeft.default_hp != 0)
-					NeluSanduLeft.default_hp--;
-				if (NeluSanduRight.default_hp != 0)
-					NeluSanduRight.default_hp--;
-			}
 		}
+
+		if (NeluSanduLeft.este_cules == true ) 
+		{
+			StartCoroutine (LavaStop (NeluSanduLeft.coliziune_booster_potion));
+			NeluSanduLeft.este_cules = false;
+		}
+
+		if( NeluSanduRight.este_cules == true )
+		{
+			StartCoroutine (LavaStop (NeluSanduRight.coliziune_booster_potion));
+			NeluSanduRight.este_cules = false;
+		}
+
+		if( NeluSanduLeft.este_culeasa_steaua == true )
+		{
+			player = GameObject.FindGameObjectWithTag ("Player");
+			boxCol = player.GetComponent<BoxCollider2D>();
+			boxCol.isTrigger = true;
+			StartCoroutine (Invincible (NeluSanduLeft.coliziune_stea));
+		}
+
+		if (NeluSanduRight.este_culeasa_steaua == true) 
+		{
+			player = GameObject.FindGameObjectWithTag ("Player");
+			boxCol = player.GetComponent<BoxCollider2D>();
+			boxCol.isTrigger = true;
+			StartCoroutine (Invincible (NeluSanduRight.coliziune_stea));
+		}
+			
 	}
 
 	IEnumerator Destroy_Ore(Collision2D col)
 	{
 		yield return new WaitForSeconds (4);
 		col.gameObject.transform.localScale = new Vector3 (0.5f, 0.5f, 1);
+	}
+
+	IEnumerator LavaStop(Collision2D col)
+	{
+		yield return new WaitForSeconds (4);
+		NeluSanduRight.lava_index = NeluSanduRight.old_lava_index - 0.001f;
+		NeluSanduLeft.lava_index = NeluSanduLeft.old_lava_index - 0.001f;
+		col.gameObject.transform.localScale = new Vector3 (0.5f, 0.5f, 1);
+	}
+
+	IEnumerator Invincible(Collision2D col)
+	{
+		yield return new WaitForSeconds (4);
+		NeluSanduLeft.is_invincible = false;
+		NeluSanduRight.is_invincible = false;
+		GameObject.FindGameObjectWithTag ("Player").GetComponent<BoxCollider2D> ().isTrigger = false;
+		NeluSanduLeft.este_culeasa_steaua = false;
+		NeluSanduRight.este_culeasa_steaua = false;
 	}
 
 }

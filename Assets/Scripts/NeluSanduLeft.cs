@@ -17,7 +17,13 @@ public class NeluSanduLeft : MonoBehaviour
 	public static int hp = 3;
 	public static int default_hp = 3;
 	public static Collision2D coliziune_minereu;
+	public static Collision2D coliziune_booster_potion;
+	public static Collision2D coliziune_stea;
 	public static bool este_distrus = false;
+	public static bool este_cules = false;
+	public static float old_lava_index;
+	public static bool is_invincible = false;
+	public static bool este_culeasa_steaua = false;
 
 
 	void Awake()
@@ -40,6 +46,8 @@ public class NeluSanduLeft : MonoBehaviour
 			transform.Translate (0, 0.6f, 0);
 			if (camera.transform.position.y - lava.transform.position.y < 16.5f )
 				lava.transform.Translate (0, -20 * lava_index, 0);
+
+			camera.transform.Translate (0, -0.6f, 0);
 
 		}
 
@@ -72,30 +80,54 @@ public class NeluSanduLeft : MonoBehaviour
 
 	void OnCollisionStay2D( Collision2D col )
 	{
-		if (col.gameObject.name.StartsWith("C") == false ) 
-		{	
-			Debug.Log ("Game over");
-			index = 0.025f;
+		if (col.gameObject.name.Contains ("Potion") == true) 
+		{
+			coliziune_booster_potion = col;
+			old_lava_index = lava_index;
+			NeluSanduRight.old_lava_index = NeluSanduRight.lava_index;
 			lava_index = 0.01f;
-			hp = 3;
-			NeluSanduRight.index = index;
-			NeluSanduRight.lava_index = lava_index;
-			NeluSanduRight.hp = hp;
-			old_index = index;
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
+			NeluSanduRight.lava_index = 0.01f;
+			col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
+			este_cules = true;
 		}
 		else
-			if( Input.GetKeyDown("space"))
+			if (col.gameObject.name.Contains ("Star") == true) 
 			{
-				hp--;
-				if (hp == 0) 
-				{
-					col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
-					hp = default_hp;
-					este_distrus = true;
-					coliziune_minereu = col;
-				}
+				is_invincible = true;
+				NeluSanduLeft.is_invincible = true;
+				este_culeasa_steaua = true;
+				coliziune_stea = col;
+				col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
 			}
+			else
+				
+				if (col.gameObject.name.StartsWith ("C") == false)
+				{	
+					if ( is_invincible == false && NeluSanduRight.is_invincible == false ) 
+						{
+							Debug.Log ("Game over");
+							index = 0.025f;
+							lava_index = 0.01f;
+							hp = 3;
+							NeluSanduRight.index = index;
+							NeluSanduRight.lava_index = lava_index;
+							NeluSanduRight.hp = hp;
+							old_index = index;
+							SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
+						}
+				} 
+				else 
+					if( Input.GetKeyDown("space"))
+					{
+						hp--;
+						if (hp == 0) 
+						{
+							col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
+							hp = default_hp;
+							este_distrus = true;
+							coliziune_minereu = col;
+						}
+					}
 	}
 
 	IEnumerator Wait()

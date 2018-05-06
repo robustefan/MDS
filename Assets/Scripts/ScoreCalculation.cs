@@ -24,6 +24,7 @@ public class ScoreCalculation : MonoBehaviour {
     {
         number++;
         score.text = number.ToString();
+		LevelGenerator.upgrade_weap = false;
 
         if (number > PlayerPrefs.GetInt("Highscore"))
         {
