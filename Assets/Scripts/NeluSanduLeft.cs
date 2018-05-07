@@ -43,11 +43,9 @@ public class NeluSanduLeft : MonoBehaviour
 	{
 		if (Input.GetKeyDown ("up")) 
 		{
-			transform.Translate (0, 0.6f, 0);
 			if (camera.transform.position.y - lava.transform.position.y < 16.5f )
 				lava.transform.Translate (0, -20 * lava_index, 0);
 
-			camera.transform.Translate (0, -0.6f, 0);
 
 		}
 
@@ -69,9 +67,10 @@ public class NeluSanduLeft : MonoBehaviour
 		if(PauseCanvas.GameIsPaused == false )
 		{
 			camera.transform.position = transform.position + offset;
-
+			camera.transform.Translate (0, index, 0);
 			transform.Translate(0, index, 0);
 		}
+
 		if( PauseCanvas.GameIsPaused == false )
 			lava.transform.Translate (0, lava_index, 0);
 
@@ -109,6 +108,7 @@ public class NeluSanduLeft : MonoBehaviour
 							index = 0.025f;
 							lava_index = 0.01f;
 							hp = 3;
+							default_hp = 3;
 							NeluSanduRight.index = index;
 							NeluSanduRight.lava_index = lava_index;
 							NeluSanduRight.hp = hp;
@@ -119,6 +119,7 @@ public class NeluSanduLeft : MonoBehaviour
 				else 
 					if( Input.GetKeyDown("space"))
 					{
+						Debug.Log (default_hp);
 						hp--;
 						if (hp == 0) 
 						{
