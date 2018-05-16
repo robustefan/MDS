@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseCanvas : MonoBehaviour {
 
     public static bool GameIsPaused = false;
     public GameObject PauseMenuUI;
+    public Text PauseText, ResumeText, Menu, Quit;
 	
 	// Update is called once per frame
 	void Update () {
@@ -32,6 +34,14 @@ public class PauseCanvas : MonoBehaviour {
     void Pause()
     {
         PauseMenuUI.SetActive(true);
+        if (LanguageMenu.language == false)
+        {
+            PauseText.text = "PAUZA";
+            ResumeText.text = "Continua";
+            Menu.text = "Meniu";
+            Quit.text = "Inchide";
+        }
+        
         Time.timeScale = 0f;
         GameIsPaused = true;
     }
