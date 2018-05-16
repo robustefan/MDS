@@ -6,7 +6,7 @@ public class LanguageMenu : MonoBehaviour {
 
     public static bool language = true, tutorial=true ;
     public Button Romana, Engleza;
-    public Toggle Sunet, Tutorial;
+    public Toggle Tutorial;
 
     void Awake()
     {
@@ -16,7 +16,7 @@ public class LanguageMenu : MonoBehaviour {
         btnE.onClick.AddListener(delegate { language=true; Debug.Log("Limba engleza"); }); 
     }
 
-    private void Update()
+   /* private void Update()
     {
         if (Tutorial.isOn == false)
         {
@@ -26,5 +26,5 @@ public class LanguageMenu : MonoBehaviour {
         {
             tutorial = true;
         }
-    }
+    }*/
 }
