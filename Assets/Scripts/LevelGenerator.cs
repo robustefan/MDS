@@ -36,7 +36,6 @@ public class LevelGenerator : MonoBehaviour
 		boosterPotion = GameObject.FindGameObjectsWithTag ("BoosterPotion");
 		scoreBoard = FindObjectOfType<ScoreCalculation> ();
 		offset = camera.transform.position - GameObject.FindGameObjectWithTag ("Player").transform.position;
-		Debug.Log (offset);
 	}
 
 	void AddObstacle(int id)
@@ -67,15 +66,15 @@ public class LevelGenerator : MonoBehaviour
 		int alegere = Random.Range (1, 3);
 
 		if( alegere == 1)
-			if (adauga_potiune % 3 == 0) 
-			{
-				Vector3 pos = new Vector3 ();
-				int r = Random.Range (0, 2);
-				pos.x = boosterPotion [r].transform.position.x;
-				pos.y = spawnPosition.y - Random.Range (4, 6);
-				Obstacles.Enqueue (Instantiate (boosterPotion [r], pos, Quaternion.identity));
-				ok++;
-			}
+		if (adauga_potiune % 3 == 0) 
+		{
+			Vector3 pos = new Vector3 ();
+			int r = Random.Range (0, 2);
+			pos.x = boosterPotion [r].transform.position.x;
+			pos.y = spawnPosition.y - Random.Range (4, 6);
+			Obstacles.Enqueue (Instantiate (boosterPotion [r], pos, Quaternion.identity));
+			ok++;
+		}
 		else
 			if  (adauga_stea % 3 == 0) 
 			{
@@ -118,8 +117,8 @@ public class LevelGenerator : MonoBehaviour
 			}
 		}
 		lastObstacleY = spawnPosition.y;
-			
-		if ((ScoreCalculation.number + 1) % 6 == 0 && upgrade_weap == false) 			// upgrade-ul armei la multiplii de 5
+
+		if ((ScoreCalculation.number + 1) % 16 == 0 && upgrade_weap == false) 			// upgrade-ul armei la multiplii de 15
 		{	
 			if (NeluSanduLeft.default_hp != 0) 
 			{
@@ -132,7 +131,7 @@ public class LevelGenerator : MonoBehaviour
 				upgrade_weap = true;
 			}
 		}
-			
+
 	}
 
 	void RemoveObstacle()
@@ -168,7 +167,7 @@ public class LevelGenerator : MonoBehaviour
 			StartCoroutine (ReloadSpeed ());
 		if( NeluSanduRight.index == 0 )
 			StartCoroutine (ReloadSpeed ());
-		
+
 		if(camera.transform.position.y > lastObstacleY - 10f)
 		{
 			lastObstacleY = spawnPosition.y;
@@ -176,14 +175,14 @@ public class LevelGenerator : MonoBehaviour
 			AddPileOfObstacles(numberOfObstacles);
 			StartCoroutine (Wait ());
 
-			NeluSanduLeft.index += 0.001f;
-			NeluSanduRight.index += 0.001f;
-			if( NeluSanduLeft.index != 0.001f )
+			NeluSanduLeft.index += 0.002f;
+			NeluSanduRight.index += 0.002f;
+			if( NeluSanduLeft.index != 0.002f )
 				NeluSanduLeft.old_index = NeluSanduLeft.index;
-			if( NeluSanduRight.index != 0.001f)
+			if( NeluSanduRight.index != 0.002f)
 				NeluSanduRight.old_index = NeluSanduRight.index;
-			NeluSanduLeft.lava_index += 0.001f;
-			NeluSanduRight.lava_index += 0.001f;
+			NeluSanduLeft.lava_index += 0.002f;
+			NeluSanduRight.lava_index += 0.002f;
 		}
 
 		if (NeluSanduLeft.este_distrus == true) 
@@ -226,9 +225,9 @@ public class LevelGenerator : MonoBehaviour
 			boxCol.isTrigger = true;
 			StartCoroutine (Invincible (NeluSanduRight.coliziune_stea));
 		}
-			
 
-		if (Input.GetKeyDown ("up"))
+
+		if (Input.GetKeyDown ("up") && PauseCanvas.GameIsPaused == false )
 		{
 			camera.transform.Translate (0, -0.6f, 0);
 			GameObject.FindGameObjectWithTag("Player").transform.Translate (0, 0.6f, 0);
@@ -248,8 +247,8 @@ public class LevelGenerator : MonoBehaviour
 	IEnumerator LavaStop(Collision2D col)
 	{
 		yield return new WaitForSeconds (4);
-		NeluSanduRight.lava_index = NeluSanduRight.old_lava_index;
-		NeluSanduLeft.lava_index = NeluSanduLeft.old_lava_index;
+		NeluSanduRight.lava_index = NeluSanduRight.old_lava_index - 0.002f;
+		NeluSanduLeft.lava_index = NeluSanduLeft.old_lava_index - 0.002f;
 		col.gameObject.transform.localScale = new Vector3 (0.5f, 0.5f, 1);
 	}
 
@@ -266,8 +265,13 @@ public class LevelGenerator : MonoBehaviour
 	IEnumerator ReloadSpeed()
 	{
 		yield return new WaitForSeconds (0.3f);
-		NeluSanduLeft.index = NeluSanduLeft.old_index;
-		NeluSanduRight.index = NeluSanduRight.old_index;
+		if (NeluSanduLeft.old_index != 0) {
+			NeluSanduLeft.index = NeluSanduLeft.old_index;
+			NeluSanduRight.index = NeluSanduLeft.old_index;
+		} else if (NeluSanduRight.old_index != 0) {
+			NeluSanduLeft.index = NeluSanduRight.old_index;
+			NeluSanduRight.index = NeluSanduRight.old_index;
+		}
 	}
 
 }

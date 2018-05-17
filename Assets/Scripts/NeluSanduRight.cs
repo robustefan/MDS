@@ -28,7 +28,7 @@ public class NeluSanduRight : MonoBehaviour
 	void Awake()
 	{
 		camera = GameObject.FindGameObjectWithTag ("MainCamera");
-		///ropeVector = GameObject.FindGameObjectsWithTag ("Rope");
+		// ropeVector = GameObject.FindGameObjectsWithTag ("Rope");
 
 	}
 
@@ -43,19 +43,19 @@ public class NeluSanduRight : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown ("up")) 
+		if (Input.GetKeyDown ("up") && PauseCanvas.GameIsPaused == false) 
 		{
 			if (camera.transform.position.y - lava.transform.position.y < 16.5f )
 				lava.transform.Translate (0, -20 * lava_index, 0);
 
 		}
 
-		if (Input.GetKeyDown ("right"))
+		if (Input.GetKeyDown ("right") && PauseCanvas.GameIsPaused == false)
 		{
 			Destroy (gameObject);
 			Instantiate (a, new Vector3 ( this.transform.position.x + 1.5f , this.transform.position.y , 0) , Quaternion.identity);
 		}
-		if( Input.GetKeyDown("space"))
+		if( Input.GetKeyDown("space") && PauseCanvas.GameIsPaused == false)
 		{
 			anim.Play("Attack Right");
 			index = 0;
@@ -99,35 +99,34 @@ public class NeluSanduRight : MonoBehaviour
 				col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
 			}
 			else
-			if (col.gameObject.name.StartsWith ("C") == false) 
-			{			
-				if (is_invincible == false && NeluSanduLeft.is_invincible == false ) 
-				{
-					Debug.Log ("Game over");
-					index = 0.025f;
-					lava_index = 0.01f;
-					hp = 3;
-					default_hp = 3;
-					NeluSanduLeft.index = index;
-					NeluSanduLeft.lava_index = lava_index;
-					NeluSanduLeft.hp = hp;
-					old_index = index;
-					SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
-				}
-			} 
-			else
-				if( Input.GetKeyDown("space"))
-				{
-					Debug.Log (default_hp);
-					hp--;
-					if (hp == 0) {
-						col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
-						hp = default_hp;
-						este_distrus = true;
-						coliziune_minereu = col;
+				if (col.gameObject.name.StartsWith ("C") == false) 
+				{			
+					if (is_invincible == false && NeluSanduLeft.is_invincible == false ) 
+					{
+						Debug.Log ("Game over");
+						index = 0.025f;
+						lava_index = 0.01f;
+						hp = 3;
+						default_hp = 3;
+						NeluSanduLeft.index = index;
+						NeluSanduLeft.lava_index = lava_index;
+						NeluSanduLeft.hp = hp;
+						old_index = index;
+						SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex - 1);
 					}
+				} 
+				else
+					if( Input.GetKeyDown("space") && PauseCanvas.GameIsPaused == false)
+					{
+						hp--;
+						if (hp == 0) {
+							col.gameObject.transform.localScale = new Vector3 (0, 0, 0);
+							hp = default_hp;
+							este_distrus = true;
+							coliziune_minereu = col;
+						}
 
-				}
+					}
 
 	}
 
