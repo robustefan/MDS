@@ -9,8 +9,8 @@ public class TutorialButton : MonoBehaviour
 
 	public void Awake()
 	{
-		PlayerPrefs.SetInt ("Hide", 0);
-		ToggleTutorial ();
+		//PlayerPrefs.SetInt ("Hide", 0);
+		//ToggleTutorial ();
 	}
 
 	public void Update()
@@ -32,13 +32,13 @@ public class TutorialButton : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("Hide", 1);
 			LanguageMenu.tutorial = true;
-			tutorialButton.graphic.CrossFadeAlpha(1, 0, false);
+			tutorialButton.graphic.CrossFadeAlpha(0, 0, false);
 		}
 		else
 		{
 			PlayerPrefs.SetInt("Hide", 0);
 			LanguageMenu.tutorial = false;
-			tutorialButton.graphic.CrossFadeAlpha(0, 0, false);
+			tutorialButton.graphic.CrossFadeAlpha(1, 0, false);
 		}
 	}
 }
